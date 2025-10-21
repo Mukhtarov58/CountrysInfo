@@ -23,9 +23,9 @@ class MainActivity : AppCompatActivity() {
 
                 binding.countryNameTextView.text = country.name
                 binding.capitalNameTaxtView.text = country.capital
-                binding.populationTextView.text = country.population.toString()
-                binding.areaTextView.text = country.area.toString()
-                binding.langvidgesTextView.text = country.languages.toString()
+                binding.populationTextView.text = formatNumber(country.population)
+                binding.areaTextView.text = formatNumber(country.area)
+                binding.langvidgesTextView.text = languagesToString(country.languages)
             }
         }
     }
