@@ -25,20 +25,47 @@ fun formatNumber(number: Long): String{
 }
 
 suspend fun loadSvg(imageView: ImageView, url: String) {
-    if (url.lowercase(Locale.ENGLISH).endsWith("svg")) {
-        val imageLoader = ImageLoader.Builder(imageView.context)
-            .components {
-                add(SvgDecoder.Factory()) // Используйте Factory(), а не передавайте контекст
+    val context = imageView.context
+
+    val imageLoader = ImageLoader.Builder(context)
+        .components {
+            if (url.lowercase(Locale.ITALY).endsWith("svg")) {
+                add(SvgDecoder.Factory())
             }
-            .build()
+        }
+        .build()
 
-        val request = ImageRequest.Builder(imageView.context)
-            .data(url)
-            .target(imageView)
-            .build()
+    val request = ImageRequest.Builder(context)
+        .data(url)
+        .target(imageView)
+        .build()
 
-        imageLoader.execute(request)
-    } else {
-        imageView.load(url)
+    // В Coil 2.x+ execute является suspend функцией
+    imageLoader.execute(request)
+}
+
+fun loadCountryFlag(imageView: ImageView, flags: Flags) {
+    val context = imageView.context
+
+    // Создаем ImageLoader с поддержкой SVG
+    val imageLoader = ImageLoader.Builder(context)
+        .components {
+            add(SvgDecoder.Factory())
+        }
+        .build()
+
+    // Загружаем SVG флаг
+    imageView.load(flags.svg, imageLoader) {
+        // Добавляем обработчики для отладки
+        listener(
+            onStart = { println("Loading SVG: ${flags.svg}") },
+            onSuccess = { _, _ -> println("SVG loaded successfully") },
+            onError = { _, result ->
+                println("SVG error: ${result.throwable.message}")
+                // Если SVG не загрузился, пробуем PNG
+                val pngUrl = flags.svg.replace(".svg", ".png")
+                imageView.load(pngUrl)
+            }
+        )
     }
 }

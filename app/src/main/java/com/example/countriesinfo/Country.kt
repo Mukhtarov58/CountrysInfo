@@ -7,10 +7,12 @@ data class Country (
     val population: Long,
     val area: Long,
     val languages: List<Language>,
-    val flags: Flags)
+    val flags: Flags
+)
 data class Language(
     val name: String
 )
 data class Flags(
-    val svg: String
+    val svg: String,
+    val png: String? = null
 )

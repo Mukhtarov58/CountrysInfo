@@ -28,7 +28,8 @@ class MainActivity : AppCompatActivity() {
                     binding.populationTextView.text = formatNumber(country.population)
                     binding.areaTextView.text = formatNumber(country.area)
                     binding.langvidgesTextView.text = languagesToString(country.languages)
-                    loadSvg(binding.imageView, country.flags.svg)
+                    loadCountryFlag(binding.imageView,country.flags)
+                    //loadSvg(binding.imageView, country.flags.svg)
 
                     binding.resultLayout.visibility = View.VISIBLE
                     binding.statusLayout.visibility = View.INVISIBLE
